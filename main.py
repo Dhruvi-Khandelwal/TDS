@@ -34,7 +34,15 @@ async def serve_frontend():
     return HTMLResponse(content=html_content)
 
 
-UPLOAD_DIR = "/tmp/uploads"
+# Use Railway's temp directory or fallback to local uploads
+UPLOAD_DIR = os.getenv("RAILWAY_VOLUME_MOUNT_PATH", "uploads")
+if UPLOAD_DIR == "uploads":
+    # For local development or when no volume is mounted
+    UPLOAD_DIR = os.path.join(os.getcwd(), "uploads")
+else:
+    # For Railway deployment with volume
+    UPLOAD_DIR = os.path.join(UPLOAD_DIR, "uploads")
+
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 # Helper funtion to show last 25 words of string s
