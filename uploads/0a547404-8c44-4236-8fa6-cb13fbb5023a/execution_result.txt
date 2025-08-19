@@ -1,0 +1,325 @@
+
+[2025-08-17 22:12:38]
+✅ requests already installed.
+----------------------------------------
+
+[2025-08-17 22:12:38]
+📦 Installing beautifulsoup4 ...
+----------------------------------------
+
+[2025-08-17 22:12:40]
+📜 Executing Code:
+import requests
+from bs4 import BeautifulSoup
+
+url = "https://en.wikipedia.org/wiki/List_of_highest-grossing_films"
+response = requests.get(url)
+
+if response.status_code == 200:
+    soup = BeautifulSoup(response.content, "html.parser")
+    # Find the first table, which is the main list of highest-grossing films
+    table = soup.find("table", {"class": "wikitable"})
+    if table:
+        headers = [th.text.strip() for th in table.find_all("th")]
+        summary = f"Found a table with the following headers: {', '.join(headers)}. The table contains the list of highest-grossing films with details like Rank, Peak, Title, Worldwide gross, and Year."
+        with open(
+            "uploads/0a547404-8c44-4236-8fa6-cb13fbb5023a/metadata.txt", "a"
+        ) as f:
+            f.write(summary + "\n")
+    else:
+        with open(
+            "uploads/0a547404-8c44-4236-8fa6-cb13fbb5023a/metadata.txt", "a"
+        ) as f:
+            f.write("Could not find the main data table on the page.\n")
+else:
+    with open("uploads/0a547404-8c44-4236-8fa6-cb13fbb5023a/metadata.txt", "a") as f:
+        f.write(
+            f"Failed to retrieve the webpage. Status code: {response.status_code}\n"
+        )
+
+----------------------------------------
+
+[2025-08-17 22:12:41]
+✅ Code executed successfully:
+
+----------------------------------------
+
+[2025-08-17 22:13:22]
+✅ requests already installed.
+----------------------------------------
+
+[2025-08-17 22:13:22]
+📦 Installing beautifulsoup4 ...
+----------------------------------------
+
+[2025-08-17 22:13:24]
+✅ pandas already installed.
+----------------------------------------
+
+[2025-08-17 22:13:24]
+✅ numpy already installed.
+----------------------------------------
+
+[2025-08-17 22:13:24]
+✅ matplotlib already installed.
+----------------------------------------
+
+[2025-08-17 22:13:24]
+✅ seaborn already installed.
+----------------------------------------
+
+[2025-08-17 22:13:24]
+📜 Executing Code:
+import requests
+from bs4 import BeautifulSoup
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+import io
+import base64
+import json
+import re
+
+# Scrape and parse the data
+url = "https://en.wikipedia.org/wiki/List_of_highest-grossing_films"
+response = requests.get(url)
+soup = BeautifulSoup(response.content, "html.parser")
+# Find the first 'wikitable' which is the target table
+table = soup.find("table", {"class": "wikitable"})
+
+# Extract headers
+headers = [th.text.strip() for th in table.find("tr").find_all("th")]
+
+# Extract data rows
+data = []
+for row in table.find_all("tr")[1:]:
+    cells = [cell.text.strip() for cell in row.find_all(["th", "td"])]
+    if len(cells) >= len(headers):
+        data.append(cells[: len(headers)])
+
+# Create and clean DataFrame
+df = pd.DataFrame(data, columns=headers)
+df = df[["Rank", "Peak", "Title", "Worldwide gross", "Year"]]
+
+
+def clean_gross(gross_str):
+    gross_str = re.sub(r"\[.*?\]", "", gross_str)
+    return int(gross_str.replace("$", "").replace(",", ""))
+
+
+df["Worldwide gross"] = df["Worldwide gross"].apply(clean_gross)
+df["Year"] = pd.to_numeric(df["Year"], errors="coerce")
+df["Rank"] = pd.to_numeric(df["Rank"], errors="coerce")
+df["Peak"] = pd.to_numeric(df["Peak"], errors="coerce")
+df.dropna(inplace=True)
+
+# 1. How many $2 bn movies were released before 2000?
+answer1 = df[(df["Worldwide gross"] >= 2_000_000_000) & (df["Year"] < 2000)].shape[0]
+
+# 2. Which is the earliest film that grossed over $1.5 bn?
+movies_1_5bn = df[df["Worldwide gross"] >= 1_500_000_000]
+answer2 = movies_1_5bn.loc[movies_1_5bn["Year"].idxmin()]["Title"]
+
+# 3. What's the correlation between the Rank and Peak?
+answer3 = df["Rank"].corr(df["Peak"])
+
+# 4. Draw a scatterplot of Rank and Peak
+plt.figure(figsize=(8, 6))
+sns.regplot(x="Rank", y="Peak", data=df, line_kws={"color": "red", "linestyle": "--"})
+plt.title("Rank vs. Peak of Highest-Grossing Films")
+plt.xlabel("Rank")
+plt.ylabel("Peak")
+
+buf = io.BytesIO()
+plt.savefig(buf, format="png", dpi=90)
+plt.close()
+buf.seek(0)
+image_base64 = base64.b64encode(buf.read()).decode("utf-8")
+answer4 = f"data:image/png;base64,{image_base64}"
+
+# Final results
+results = [answer1, answer2, answer3, answer4]
+
+with open("uploads/0a547404-8c44-4236-8fa6-cb13fbb5023a/result.json", "w") as f:
+    json.dump(results, f)
+
+with open("uploads/0a547404-8c44-4236-8fa6-cb13fbb5023a/metadata.txt", "a") as f:
+    f.write("\n--- Cleaned Data Head ---\n")
+    f.write(df.head().to_string() + "\n")
+
+----------------------------------------
+
+[2025-08-17 22:13:27]
+❌ Execution error:
+Traceback (most recent call last):
+  File "/home/sabya/TDS_project2/uploads/0a547404-8c44-4236-8fa6-cb13fbb5023a/job_/script.py", line 37, in <module>
+    df['Worldwide gross'] = df['Worldwide gross'].apply(clean_gross)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sabya/TDS_project2/venv/lib/python3.12/site-packages/pandas/core/series.py", line 4935, in apply
+    ).apply()
+      ^^^^^^^
+  File "/home/sabya/TDS_project2/venv/lib/python3.12/site-packages/pandas/core/apply.py", line 1422, in apply
+    return self.apply_standard()
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sabya/TDS_project2/venv/lib/python3.12/site-packages/pandas/core/apply.py", line 1502, in apply_standard
+    mapped = obj._map_values(
+             ^^^^^^^^^^^^^^^^
+  File "/home/sabya/TDS_project2/venv/lib/python3.12/site-packages/pandas/core/base.py", line 925, in _map_values
+    return algorithms.map_array(arr, mapper, na_action=na_action, convert=convert)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sabya/TDS_project2/venv/lib/python3.12/site-packages/pandas/core/algorithms.py", line 1743, in map_array
+    return lib.map_infer(values, mapper, convert=convert)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "pandas/_libs/lib.pyx", line 2999, in pandas._libs.lib.map_infer
+  File "/home/sabya/TDS_project2/uploads/0a547404-8c44-4236-8fa6-cb13fbb5023a/job_/script.py", line 35, in clean_gross
+    return int(gross_str.replace('$', '').replace(',', ''))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: invalid literal for int() with base 10: 'T2257844554'
+
+----------------------------------------
+
+[2025-08-17 22:14:38]
+✅ requests already installed.
+----------------------------------------
+
+[2025-08-17 22:14:38]
+📦 Installing beautifulsoup4 ...
+----------------------------------------
+
+[2025-08-17 22:14:39]
+✅ pandas already installed.
+----------------------------------------
+
+[2025-08-17 22:14:39]
+✅ numpy already installed.
+----------------------------------------
+
+[2025-08-17 22:14:39]
+✅ matplotlib already installed.
+----------------------------------------
+
+[2025-08-17 22:14:39]
+✅ seaborn already installed.
+----------------------------------------
+
+[2025-08-17 22:14:39]
+📜 Executing Code:
+import requests
+from bs4 import BeautifulSoup
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+import io
+import base64
+import json
+import re
+
+# Scrape and parse the data
+url = "https://en.wikipedia.org/wiki/List_of_highest-grossing_films"
+response = requests.get(url)
+soup = BeautifulSoup(response.content, "html.parser")
+table = soup.find("table", {"class": "wikitable"})
+
+# The first row contains the headers
+headers = [th.text.strip() for th in table.find("tr").find_all("th")]
+
+# Extract data rows
+data = []
+for row in table.find_all("tr")[1:]:
+    cells = [cell.text.strip() for cell in row.find_all(["th", "td"])]
+    if len(cells) >= len(headers):
+        data.append(cells[: len(headers)])
+
+# Create DataFrame
+df = pd.DataFrame(data, columns=headers)
+
+# Select and clean relevant columns
+df = df[["Rank", "Peak", "Title", "Worldwide gross", "Year"]]
+
+
+# Corrected function to clean the 'Worldwide gross' column
+def clean_gross(gross_str):
+    # Extracts all digits from the string and joins them.
+    # This is robust against characters like '$', ',', '[...]', and other symbols.
+    digits = re.findall(r"\d+", str(gross_str))
+    if digits:
+        try:
+            return int("".join(digits))
+        except ValueError:
+            return np.nan
+    return np.nan
+
+
+# Apply cleaning and type conversion
+df["Worldwide gross"] = df["Worldwide gross"].apply(clean_gross)
+df["Year"] = pd.to_numeric(df["Year"], errors="coerce")
+df["Rank"] = pd.to_numeric(df["Rank"], errors="coerce")
+df["Peak"] = pd.to_numeric(df["Peak"], errors="coerce")
+
+# Drop rows with any missing values after cleaning
+df.dropna(inplace=True)
+df = df.astype(
+    {"Year": "int", "Rank": "int", "Peak": "int", "Worldwide gross": "int64"}
+)
+
+# 1. How many $2 bn movies were released before 2000?
+answer1 = int(
+    df[(df["Worldwide gross"] >= 2_000_000_000) & (df["Year"] < 2000)].shape[0]
+)
+
+# 2. Which is the earliest film that grossed over $1.5 bn?
+movies_1_5bn = df[df["Worldwide gross"] >= 1_500_000_000]
+answer2 = movies_1_5bn.loc[movies_1_5bn["Year"].idxmin()]["Title"]
+
+# 3. What's the correlation between the Rank and Peak?
+answer3 = df["Rank"].corr(df["Peak"])
+
+# 4. Draw a scatterplot of Rank and Peak
+plt.figure(figsize=(8, 6))
+sns.regplot(
+    x="Rank",
+    y="Peak",
+    data=df,
+    line_kws={"color": "red", "linestyle": "--"},
+    scatter_kws={"alpha": 0.5},
+)
+plt.title("Rank vs. Peak of Highest-Grossing Films")
+plt.xlabel("Rank")
+plt.ylabel("Peak")
+plt.grid(True)
+
+buf = io.BytesIO()
+plt.savefig(buf, format="png", bbox_inches="tight", dpi=85)
+plt.close()
+buf.seek(0)
+image_base64 = base64.b64encode(buf.read()).decode("utf-8")
+answer4 = f"data:image/png;base64,{image_base64}"
+
+# Final results
+results = [answer1, answer2, answer3, answer4]
+
+with open("uploads/0a547404-8c44-4236-8fa6-cb13fbb5023a/result.json", "w") as f:
+    json.dump(results, f)
+
+with open("uploads/0a547404-8c44-4236-8fa6-cb13fbb5023a/metadata.txt", "a") as f:
+    f.write("\n--- Corrected Script Execution: Cleaned Data Head ---\n")
+    f.write(df.head().to_string() + "\n")
+
+----------------------------------------
+
+[2025-08-17 22:14:42]
+✅ Code executed successfully:
+
+----------------------------------------
+
+[2025-08-17 22:14:53]
+📜 Executing Code:
+
+----------------------------------------
+
+[2025-08-17 22:14:53]
+✅ Code executed successfully:
+
+----------------------------------------

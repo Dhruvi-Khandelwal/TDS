@@ -1,0 +1,9 @@
+Found a table with the following headers: Rank, Peak, Title, Worldwide gross, Year, Ref, Avatar, Avengers: Endgame, Avatar: The Way of Water, Titanic, Ne Zha 2, Star Wars: The Force Awakens, Avengers: Infinity War, Spider-Man: No Way Home, Inside Out 2, Jurassic World, The Lion King, The Avengers, Furious 7, Top Gun: Maverick, Frozen 2, Barbie, Avengers: Age of Ultron, The Super Mario Bros. Movie, Black Panther, Harry Potter and the Deathly Hallows – Part 2, Deadpool & Wolverine, Star Wars: The Last Jedi, Jurassic World: Fallen Kingdom, Frozen, Beauty and the Beast, Incredibles 2, The Fate of the Furious, Iron Man 3, Minions, Captain America: Civil War, Aquaman, The Lord of the Rings: The Return of the King, Spider-Man: Far From Home, Captain Marvel, Transformers: Dark of the Moon, Skyfall, Transformers: Age of Extinction, The Dark Knight Rises, Joker, Star Wars: The Rise of Skywalker, Toy Story 4, Toy Story 3, Pirates of the Caribbean: Dead Man's Chest, Moana 2, Rogue One: A Star Wars Story, Aladdin, Star Wars: Episode I – The Phantom Menace, Pirates of the Caribbean: On Stranger Tides, Jurassic Park, Despicable Me 3. The table contains the list of highest-grossing films with details like Rank, Peak, Title, Worldwide gross, and Year.
+
+--- Corrected Script Execution: Cleaned Data Head ---
+   Rank  Peak                     Title  Worldwide gross  Year
+0     1     1                    Avatar       2923706026  2009
+1     2     1         Avengers: Endgame       2797501328  2019
+2     3     3  Avatar: The Way of Water       2320250281  2022
+3     4     1                   Titanic       2257844554  1997
+4     5     5                  Ne Zha 2       2212300000  2025

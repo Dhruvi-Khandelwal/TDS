@@ -1,0 +1,46 @@
+Found a table with headers: Rank, Peak, Title, Worldwide gross, Year, Ref, Avatar, Avengers: Endgame, Avatar: The Way of Water, Titanic, Ne Zha 2, Star Wars: The Force Awakens, Avengers: Infinity War, Spider-Man: No Way Home, Inside Out 2, Jurassic World, The Lion King, The Avengers, Furious 7, Top Gun: Maverick, Frozen 2, Barbie, Avengers: Age of Ultron, The Super Mario Bros. Movie, Black Panther, Harry Potter and the Deathly Hallows – Part 2, Deadpool & Wolverine, Star Wars: The Last Jedi, Jurassic World: Fallen Kingdom, Frozen, Beauty and the Beast, Incredibles 2, The Fate of the Furious, Iron Man 3, Minions, Captain America: Civil War, Aquaman, The Lord of the Rings: The Return of the King, Spider-Man: Far From Home, Captain Marvel, Transformers: Dark of the Moon, Skyfall, Transformers: Age of Extinction, The Dark Knight Rises, Joker, Star Wars: The Rise of Skywalker, Toy Story 4, Toy Story 3, Pirates of the Caribbean: Dead Man's Chest, Moana 2, Rogue One: A Star Wars Story, Aladdin, Star Wars: Episode I – The Phantom Menace, Pirates of the Caribbean: On Stranger Tides, Jurassic Park, Despicable Me 3. It contains a list of highest-grossing films with details like Rank, Peak, Title, Worldwide gross, and Year.
+
+Successfully scraped and saved film data to uploads/47064665-40ec-4449-8882-4605e89a3f09/highest_grossing_films.csv.
+DataFrame head:
+Empty DataFrame
+Columns: [Rank, Peak, Title, Worldwide_gross, Year]
+Index: []
+
+Correctly scraped data. DataFrame head:
+   Rank  Peak                         Title  Worldwide_gross  Year
+0     1     1                        Avatar       2923706026  2009
+1     2     1             Avengers: Endgame       2797501328  2019
+2     3     3      Avatar: The Way of Water       2320250281  2022
+3     5     5                      Ne Zha 2       2212300000  2025
+4     6     3  Star Wars: The Force Awakens       2068223624  2015
+
+Answer 1: 0
+Answer 2: Avatar
+Answer 3: 0.5115502693300087
+Answer 4: Plot generated.
+
+Correctly scraped data with robust parsing. DataFrame head:
+   Rank  Peak                         Title  Worldwide_gross  Year
+0     1     1                        Avatar       2923706026  2009
+1     2     1             Avengers: Endgame       2797501328  2019
+2     3     3      Avatar: The Way of Water       2320250281  2022
+3     5     5                      Ne Zha 2       2212300000  2025
+4     6     3  Star Wars: The Force Awakens       2068223624  2015
+
+Corrected Answer 1: 0
+Corrected Answer 2: Avatar
+Corrected Answer 3: 0.5238572295419728
+Corrected Answer 4: Plot regenerated.
+
+Corrected scrape with tag decomposition. DataFrame head:
+   Rank  Peak                     Title  Worldwide_gross  Year
+0     1     1                    Avatar       2923706026  2009
+1     2     1         Avengers: Endgame       2797501328  2019
+2     3     3  Avatar: The Way of Water       2320250281  2022
+3     4     1                   Titanic       2257844554  1997
+4     5     5                  Ne Zha 2       2212300000  2025
+
+Final Answer 1: 1
+Final Answer 2: Titanic
+Final Answer 3: 0.48578218083889235
+Final Answer 4: Plot regenerated.

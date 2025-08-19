@@ -1,0 +1,179 @@
+
+[2025-08-17 22:03:46]
+✅ requests already installed.
+----------------------------------------
+
+[2025-08-17 22:03:46]
+📦 Installing beautifulsoup4 ...
+----------------------------------------
+
+[2025-08-17 22:03:47]
+📜 Executing Code:
+import requests
+from bs4 import BeautifulSoup
+
+url = "https://en.wikipedia.org/wiki/List_of_highest-grossing_films"
+response = requests.get(url)
+
+if response.status_code == 200:
+    soup = BeautifulSoup(response.content, "html.parser")
+    # Find the main table, which is usually the first wikitable on the page
+    table = soup.find("table", {"class": "wikitable"})
+    if table:
+        # Extract headers
+        headers = [header.get_text(strip=True) for header in table.find_all("th")]
+        summary = f"""Table Found: 'List of highest-grossing films'\nHeaders: {headers}\nThis table contains the rank, peak, title, worldwide gross, year, and reference for the highest-grossing films."""
+    else:
+        summary = "Could not find the main data table on the page."
+else:
+    summary = f"Failed to retrieve the webpage. Status code: {response.status_code}"
+
+with open("uploads/a1f863b2-9e71-47d2-baea-5e8e544f14e9/metadata.txt", "a") as f:
+    f.write(summary + "\n")
+
+----------------------------------------
+
+[2025-08-17 22:03:48]
+✅ Code executed successfully:
+
+----------------------------------------
+
+[2025-08-17 22:03:55]
+✅ pandas already installed.
+----------------------------------------
+
+[2025-08-17 22:03:55]
+✅ lxml already installed.
+----------------------------------------
+
+[2025-08-17 22:03:55]
+📜 Executing Code:
+import pandas as pd
+
+url = "https://en.wikipedia.org/wiki/List_of_highest-grossing_films"
+tables = pd.read_html(url)
+df = tables[0]
+
+# The first table is the one we want, let's clean it up.
+# Headers are multi-level, let's flatten them.
+df.columns = ["Rank", "Peak", "Title", "Worldwide_gross", "Year", "Reference"]
+
+# Save the dataframe to a csv file
+df.to_csv(
+    "uploads/a1f863b2-9e71-47d2-baea-5e8e544f14e9/highest_grossing_films.csv",
+    index=False,
+)
+
+with open("uploads/a1f863b2-9e71-47d2-baea-5e8e544f14e9/metadata.txt", "a") as f:
+    f.write(
+        "Successfully scraped and saved the table of highest-grossing films to highest_grossing_films.csv.\n"
+    )
+
+----------------------------------------
+
+[2025-08-17 22:03:57]
+✅ Code executed successfully:
+
+----------------------------------------
+
+[2025-08-17 22:04:20]
+✅ pandas already installed.
+----------------------------------------
+
+[2025-08-17 22:04:20]
+✅ numpy already installed.
+----------------------------------------
+
+[2025-08-17 22:04:20]
+✅ matplotlib already installed.
+----------------------------------------
+
+[2025-08-17 22:04:20]
+📜 Executing Code:
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import io
+import base64
+import json
+import re
+
+
+def clean_gross(value):
+    return float(re.sub(r"[^\d.]", "", str(value)))
+
+
+def clean_year(value):
+    match = re.search(r"\d{4}", str(value))
+    return int(match.group(0)) if match else np.nan
+
+
+# Load the data
+df = pd.read_csv(
+    "uploads/a1f863b2-9e71-47d2-baea-5e8e544f14e9/highest_grossing_films.csv"
+)
+
+# Clean the data
+df["Worldwide_gross_numeric"] = df["Worldwide_gross"].apply(clean_gross)
+df["Year_cleaned"] = df["Year"].apply(clean_year)
+df["Rank"] = pd.to_numeric(df["Rank"], errors="coerce")
+df["Peak"] = pd.to_numeric(df["Peak"], errors="coerce")
+df.dropna(inplace=True)
+
+# --- Question 1: How many $2 bn movies were released before 2000? ---
+q1_answer = df[
+    (df["Worldwide_gross_numeric"] >= 2_000_000_000) & (df["Year_cleaned"] < 2000)
+].shape[0]
+
+# --- Question 2: Which is the earliest film that grossed over $1.5 bn? ---
+over_1_5_bn = df[df["Worldwide_gross_numeric"] >= 1_500_000_000]
+q2_answer = over_1_5_bn.sort_values(by="Year_cleaned", ascending=True).iloc[0]["Title"]
+
+# --- Question 3: What's the correlation between the Rank and Peak? ---
+q3_answer = df["Rank"].corr(df["Peak"])
+
+# --- Question 4: Draw a scatterplot of Rank and Peak ---
+plt.figure(figsize=(8, 6))
+plt.scatter(df["Rank"], df["Peak"], alpha=0.6)
+plt.title("Rank vs. Peak of Highest-Grossing Films")
+plt.xlabel("Rank")
+plt.ylabel("Peak")
+
+# Add regression line
+z = np.polyfit(df["Rank"], df["Peak"], 1)
+p = np.poly1d(z)
+plt.plot(df["Rank"], p(df["Rank"]), "r--")
+plt.grid(True)
+plt.tight_layout()
+
+# Save plot to buffer and encode
+buf = io.BytesIO()
+plt.savefig(buf, format="png")
+buf.seek(0)
+image_base64 = base64.b64encode(buf.read()).decode("utf-8")
+q4_answer = f"data:image/png;base64,{image_base64}"
+buf.close()
+plt.close()
+
+# --- Save final answers to JSON file ---
+final_answers = [q1_answer, q2_answer, q3_answer, q4_answer]
+
+with open("uploads/a1f863b2-9e71-47d2-baea-5e8e544f14e9/result.json", "w") as f:
+    json.dump(final_answers, f)
+
+----------------------------------------
+
+[2025-08-17 22:04:21]
+✅ Code executed successfully:
+
+----------------------------------------
+
+[2025-08-17 22:04:32]
+📜 Executing Code:
+
+----------------------------------------
+
+[2025-08-17 22:04:32]
+✅ Code executed successfully:
+
+----------------------------------------

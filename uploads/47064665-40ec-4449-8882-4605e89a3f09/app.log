@@ -1,0 +1,39 @@
+2025-08-17 21:53:32,936 [INFO] Step-1: Folder created: uploads/47064665-40ec-4449-8882-4605e89a3f09
+2025-08-17 21:53:32,946 [INFO] Using Python executable: venv/bin/python3
+2025-08-17 21:53:32,946 [INFO] Step-2: File sent {'question.txt': 'uploads/47064665-40ec-4449-8882-4605e89a3f09/question.txt'}
+2025-08-17 21:53:32,946 [INFO] 🤖 Step-1: Getting scrap code and metadata from llm. Tries count = 0
+2025-08-17 21:53:41,207 [INFO] 🤖 Step-1: Successfully parsed response from LLM.
+2025-08-17 21:53:41,207 [INFO] 💻 Step-3: Entering loop
+2025-08-17 21:53:41,207 [INFO] 💻 Loop-1: Running LLM code.
+2025-08-17 21:53:44,111 [INFO] ✅💻 Loop-1: Code executed successfully.
+2025-08-17 21:53:44,111 [INFO] 🤖 Loop-1: Inside Loop LLM call.
+2025-08-17 21:54:14,434 [INFO] 💻 Loop-2: Running LLM code.
+2025-08-17 21:54:15,896 [ERROR] ❌💻 Loop-2: Code execution failed: ❌ Execution error: File "/home/sabya/TDS_project2/uploads/47064665-40ec-4449-8882-4605e89a3f09/job_/script.py", line 37 data.append([rank, peak, title, gross, year]) SyntaxError: expected 'except' or 'finally' block
+2025-08-17 21:54:15,896 [INFO] 🤖 Loop-2: Inside Loop LLM call.
+2025-08-17 21:55:02,049 [INFO] 💻 Loop-3: Running LLM code.
+2025-08-17 21:55:05,109 [INFO] ✅💻 Loop-3: Code executed successfully.
+2025-08-17 21:55:05,110 [INFO] 🤖 Loop-3: Inside Loop LLM call.
+2025-08-17 21:55:54,417 [INFO] 💻 Loop-4: Running LLM code.
+2025-08-17 21:55:58,863 [ERROR] ❌💻 Loop-4: Code execution failed: ❌ Execution error: Traceback (most recent call last): File "/home/sabya/TDS_project2/uploads/47064665-40ec-4449-8882-4605e89a3f09/job_/script.py", line 26, in <module> title = re.sub(r'\\[.*?\]', '', title).strip() ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ File "/home/linuxbrew/.linuxbrew/opt/python@3.12/lib/python3.12/re/__init__.py", line 186, in sub return _compile(pattern, flags).sub(repl, string, count) ^^^^^^^^^^^^^^^^^^^^^^^^ File "/home/linuxbrew/.linuxbrew/opt/python@3.12/lib/python3.12/re/__init__.py", line 307, in _compile p = _compiler.compile(pattern, flags) ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ File "/home/linuxbrew/.linuxbrew/opt/python@3.12/lib/python3.12/re/_compiler.py", line 745, in compile p = _parser.parse(p, flags) ^^^^^^^^^^^^^^^^^^^^^^^ File "/home/linuxbrew/.linuxbrew/opt/python@3.12/lib/python3.12/re/_parser.py", line 979, in parse p = _parse_sub(source, state, flags & SRE_FLAG_VERBOSE, 0) ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ File "/home/linuxbrew/.linuxbrew/opt/python@3.12/lib/python3.12/re/_parser.py", line 460, in _parse_sub itemsappend(_parse(source, state, verbose, nested + 1, ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ File "/home/linuxbrew/.linuxbrew/opt/python@3.12/lib/python3.12/re/_parser.py", line 568, in _parse raise source.error("unterminated character set", re.error: unterminated character set at position 2
+2025-08-17 21:55:58,863 [INFO] 🤖 Loop-4: Inside Loop LLM call.
+2025-08-17 21:56:20,517 [INFO] 💻 Loop-5: Running LLM code.
+2025-08-17 21:56:25,100 [INFO] ✅💻 Loop-5: Code executed successfully.
+2025-08-17 21:56:25,100 [INFO] ✅📁 Loop-5: Found result files.
+2025-08-17 21:56:25,100 [INFO] 🤖 Loop-5: Checking result validity.
+2025-08-17 21:56:30,604 [INFO] 🤖 Loop-5: Checking result validity.
+2025-08-17 21:57:20,585 [INFO] 💻 Loop-5: Re-running code as per validation result.
+2025-08-17 21:57:20,585 [INFO] 💻 Loop-6: Running LLM code.
+2025-08-17 21:57:25,108 [INFO] ✅💻 Loop-6: Code executed successfully.
+2025-08-17 21:57:25,108 [INFO] ✅📁 Loop-6: Found result files.
+2025-08-17 21:57:25,109 [INFO] 🤖 Loop-6: Checking result validity.
+2025-08-17 21:57:29,512 [INFO] 🤖 Loop-6: Checking result validity.
+2025-08-17 21:58:15,540 [INFO] 💻 Loop-6: Re-running code as per validation result.
+2025-08-17 21:58:15,540 [INFO] 💻 Loop-7: Running LLM code.
+2025-08-17 21:58:19,965 [INFO] ✅💻 Loop-7: Code executed successfully.
+2025-08-17 21:58:19,965 [INFO] ✅📁 Loop-7: Found result files.
+2025-08-17 21:58:19,965 [INFO] 🤖 Loop-7: Checking result validity.
+2025-08-17 21:58:28,483 [INFO] 🤖 Loop-7: Checking result validity.
+2025-08-17 21:59:41,981 [INFO] ✅ Loop-7: Validation successful, no re-run needed.
+2025-08-17 21:59:41,981 [INFO] 💻 Step-6: Running final code.
+2025-08-17 21:59:42,001 [INFO] 📁 Step-7: Reading result.json
+2025-08-17 21:59:42,001 [INFO] ✅📁 Step-7: send result back
