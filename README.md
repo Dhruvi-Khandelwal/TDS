@@ -1,165 +1,165 @@
-# Read this file everything will happen on its own.
+# TDS - Data Analysis Engine
 
-# Video of Installation
-### Final Project Installation Video
-- [Youtube](https://www.youtube.com/watch?v=2k1LpRcY85w)
-  
-`Note: Below video is old and a lot of code has changed. But it is still useful.`
-### First Installation Video
-- [Google Drive](https://drive.google.com/file/d/1BoTTEmpH7XLz9uVZnfIlaia6Y-MR8Zqr/view?usp=drive_link)
-- [Youtube](https://www.youtube.com/watch?v=-4QLncypQZ8)
-
-`Note: try to use linux distro or install WSL(subsystem for linux) on windows.`
+A FastAPI-based data analysis engine that uses Google Gemini AI to automatically analyze datasets and answer questions through natural language processing.
 
 ## 🚀 Features
-- Automatically installs dependencies from `requirements.txt`
-- Installs ngrok if not already installed
-- Starts `uvicorn` server
-- Exposes your local server publicly via ngrok
-- Clean shutdown with **Ctrl+C**
+- Automatically processes multiple data formats (CSV, JSON, PDF, images, URLs)
+- Uses Google Gemini AI for intelligent data analysis
+- Supports multi-step analysis workflows
+- REST API with HTML frontend
+- Automatic dependency management
+- Railway deployment ready
+
 ---
 
-## 📦 Prerequisites
-Make sure you have:
+## 🔑 Getting Credentials
+
+### Google API Key
+Get your Gemini API key here: [https://aistudio.google.com/apikey](https://aistudio.google.com/apikey)
+
+---
+
+## 🛠️ Local Development
+
+### Prerequisites
 - **Python 3.8+** installed
 - **pip** installed
 
----
-
-
-## 🔑 Getting Credentials
-1. **Google API Key**  
-   Get your key here:  
-   [https://aistudio.google.com/apikey](https://aistudio.google.com/apikey)
-
-2. **ngrok Auth Token**  
-   Register and get your token here:  
-   [https://ngrok.com/](https://ngrok.com/)
-
-   ## ONLY COPY SELECTED PART
-   ![ngrog screenshot](photos/ngrok_ss.png)
-
----
-
-
-## 🛠️ Installation: Just execute this file and enter your credentials
-
-### 1. Make the script executable
+### 1. Clone and Setup
 ```bash
-chmod +x start.sh
+git clone <your-repo-url>
+cd TDS
 ```
 
-### 2. Then run the script 
+### 2. Install Dependencies
 ```bash
-./start.sh
+pip install -r requirements.txt
 ```
 
+### 3. Environment Setup
+Copy `.env.example` to `.env` and add your API keys:
+```bash
+cp .env.example .env
+```
+
+Edit `.env` file:
+```
+GOOGLE_API_KEY=your_primary_api_key_here
+GOOGLE_API_KEY2=your_secondary_api_key_here
+GOOGLE_API_KEY3=your_tertiary_api_key_here
+```
+
+### 4. Run the Application
+```bash
+uvicorn main:app --reload --host 0.0.0.0 --port 8000
+```
+
+Access the application at: `http://localhost:8000`
 
 ---
 
-# Lastly copy paste the public url
-Also don't forgot to add "/api" after the url.
+## 🚂 Railway Deployment
 
-- ### public link
+This project is configured for Railway deployment with the following files:
+- `Procfile` - Defines the web process
+- `railway.toml` - Railway configuration
+- `requirements.txt` - Python dependencies
 
-eg: https://dd0b98d2abc3.ngrok-free.app
-![public link](photos/final_public_link.png)
+### Deploy to Railway:
 
-- ### Add "/api"
+1. **Push to GitHub** (see steps below)
+2. **Connect to Railway:**
+   - Visit [railway.app](https://railway.app)
+   - Connect your GitHub account
+   - Select your repository
+   - Click "Deploy"
 
-## Final link: public link + "/api"
+3. **Set Environment Variables:**
+   - Go to your Railway project dashboard
+   - Click on "Variables" tab
+   - Add your Google API keys:
+     - `GOOGLE_API_KEY`
+     - `GOOGLE_API_KEY2` 
+     - `GOOGLE_API_KEY3`
 
-eg:  https://dd0b98d2abc3.ngrok-free.app/api
+4. **Deploy:**
+   - Railway will automatically deploy your application
+   - You'll get a public URL like `https://your-app.railway.app`
 
-`Note: This url will be different every time you restart the server. so use below method to get a static url.`
+---
 
-# Static Url
-- Go to this(https://dashboard.ngrok.com/domains) website and claim you free static url.
-
-- and after that modify the start.sh file's last line. like this
-
-- Before
-
-![before](photos/before.png)
-
-- After 
-
-![after](photos/after.png)
-
-
-## Environment Variables Setup
-
-This project loads environment variables from a file named `env_variables.txt` located in the project root.
-
-**How to use:**
-
-1. Create a file called `env_variables.txt` in the project directory.
-2. Add your variables in the format:
-   ```
-   GENAI_API_KEY=your_google_api_key
-   NGROK_AUTHTOKEN=your_ngrok_authtoken
-   # You can add more variables as needed
-   ```
-3. When you run `start.sh`, these variables will be automatically loaded and exported to your environment.
-
-
-
-# Testing
 ## 🌐 Using the Frontend
 
 A simple HTML frontend is provided for uploading multiple files and viewing API responses.
 
 ### How to use:
+1. Open your deployed URL in a browser
+2. Click "Choose Files" and select your data files
+3. Click "Submit" to upload and analyze
+4. View the AI-generated analysis results
 
-1. Make sure your FastAPI server is running and accessible (e.g., via ngrok).
-2. Open `https://xxxxxx.ngrok-free.app` in your browser.
-3. Click the "Choose Files" button and select one or more files.
-4. Click "Submit" to upload the files(you can select multiple files) to the backend.
-5. The response from the API will be displayed below the form.
-
-![Frontend photo](photos/Frontend.png)
-
-**Note:**  
-- The frontend sends files to the `/api` endpoint of your public URL.
-- You can preview selected file names before uploading.
+### API Endpoint
+Direct API access: `POST /api`
 
 ---
 
-### Troubleshooting
+## 📁 Project Structure
 
-- If you see "No response yet" or an error, check that your FastAPI server is running and accessible.
-- Make sure the public URL matches your ngrok tunnel and ends with `/api` for direct API
+```
+├── main.py              # FastAPI application
+├── task_engine.py       # Python code execution engine
+├── gemini.py           # Google Gemini AI integration
+├── api_key_rotator.py  # API key rotation system
+├── frontend.html       # Web interface
+├── requirements.txt    # Python dependencies
+├── Procfile           # Railway process definition
+├── railway.toml       # Railway configuration
+├── .env.example       # Environment variables template
+├── .gitignore         # Git ignore rules
+└── sample_questions/  # Example datasets and questions
+```
 
+---
 
-# Common Issues
+## 🔧 Configuration
 
-1. ### Uvicorn Server Shutdown Issues
+### API Key Rotation
+The system supports multiple Google API keys for rate limiting. Add your keys to the environment variables or modify `api_key_rotator.py`.
 
-**Note:**  
-Sometimes, pressing **Ctrl+C** does not fully stop the Uvicorn server. This can lead to "Internal Server Error" or port conflicts when you try to restart the server.
+### File Upload Directory
+- **Local Development:** `uploads/` directory
+- **Railway Deployment:** Uses Railway's temporary storage
 
-**What to do:**  
-- If you still see errors after stopping the script, manually kill any running Uvicorn processes:
-  ```bash
-  pkill -f uvicorn
-  ```
-- Alternatively, you can restart your terminal or system to ensure all processes are stopped.
+---
 
-**Tip:**  
-Always make sure no old Uvicorn processes are running before starting the
+## 🐛 Troubleshooting
 
-![Uvicorn server stopping](photos/uvicorn_server_stoping.png)
+### Common Issues:
+1. **API Rate Limits:** Add multiple Google API keys
+2. **Memory Issues:** Railway has memory limits for free tier
+3. **File Upload Size:** Adjust limits in `main.py` if needed
 
+### Logs:
+- Check Railway logs in the dashboard
+- Local logs are stored in `uploads/<request-id>/app.log`
 
-# New changes
+---
 
-## Added api_key_rotator.py file to rotate APIs
-- add you APIs there
-`Note: now it no longer asks for API keys in terminal. Add them manually in the api rotator file.`
-- Also create 3 venv with names venv, venv1, venv2 in the root folder.
-  ```bash
-  pip install virtualenv-clone
-  ```
-  ```bash
-  virtualenv-clone venv venv2
-  ```
+## 📝 License
+
+See `LICENSE` file for details.
+
+---
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Submit a pull request
+
+---
+
+## Video Tutorials
+- [Installation Guide](https://www.youtube.com/watch?v=2k1LpRcY85w)
+- [Deployment Tutorial](https://www.youtube.com/watch?v=-4QLncypQZ8)

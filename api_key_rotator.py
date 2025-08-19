@@ -3,23 +3,34 @@ import time
 
 import os
 
-# Read environment variable
+# Read environment variables
 api_key1 = os.getenv("GOOGLE_API_KEY")
 api_key2 = os.getenv("GOOGLE_API_KEY2")
 api_key3 = os.getenv("GOOGLE_API_KEY3")
 
-API_KEYS  = [
-    {"key": "AIzaSyAFoEHTEOj6pZrJIgl0ZbKHLOGR-fbsxWc", "req_timestamps": []}
-    , {"key": "AIzaSyB95M_D1qXL8-WQ9QX968zQviqaO6udkG8", "req_timestamps": []}
-    , {"key": "AIzaSyCMpGyo7EkwcpsxgZwHkn4JvqRtlfAl1FQ", "req_timestamps": []}
-]
+# Initialize with empty list
+API_KEYS = []
 
+# Add environment API keys if they exist
 for api_key in [api_key1, api_key2, api_key3]:
     if api_key:
-        print("API Key found:", api_key)
+        print("API Key found and added to rotation")
         API_KEYS.append({"key": api_key, "req_timestamps": []})        
     else:
-        print("API Key not set.")
+        print("API Key not set in environment variables")
+
+# If no environment variables are set, you can add fallback keys here
+# WARNING: Remove these hardcoded keys before deploying to production
+if not API_KEYS:
+    print("No API keys found in environment variables. Using fallback keys.")
+    API_KEYS = [
+        {"key": "AIzaSyAFoEHTEOj6pZrJIgl0ZbKHLOGR-fbsxWc", "req_timestamps": []},
+        {"key": "AIzaSyB95M_D1qXL8-WQ9QX968zQviqaO6udkG8", "req_timestamps": []},
+        {"key": "AIzaSyCMpGyo7EkwcpsxgZwHkn4JvqRtlfAl1FQ", "req_timestamps": []}
+    ]
+
+if not API_KEYS:
+    raise ValueError("No API keys available. Please set GOOGLE_API_KEY environment variables.")
         
 key_cycle = itertools.cycle(API_KEYS)
 MAX_REQS_PER_MIN = 5
