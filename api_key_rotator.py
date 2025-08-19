@@ -9,7 +9,11 @@ api_key2 = os.getenv("GOOGLE_API_KEY2")
 api_key3 = os.getenv("GOOGLE_API_KEY3")
 
 # Initialize with empty list
-API_KEYS = []
+API_KEYS = [
+     {"key": "AIzaSyAFoEHTEOj6pZrJIgl0ZbKHLOGR-fbsxWc", "req_timestamps": []},
+        {"key": "AIzaSyB95M_D1qXL8-WQ9QX968zQviqaO6udkG8", "req_timestamps": []},
+        {"key": "AIzaSyCMpGyo7EkwcpsxgZwHkn4JvqRtlfAl1FQ", "req_timestamps": []}
+]
 
 # Add environment API keys if they exist
 for api_key in [api_key1, api_key2, api_key3]:
